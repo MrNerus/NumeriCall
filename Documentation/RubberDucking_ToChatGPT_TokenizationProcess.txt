@@ -1,0 +1,33 @@
+root(2,root(3,64)) + root(2,root(5,1024))
+
+This is my current equation. I want to maintain precedence. 
+
+Lets say, 
+a = root(3,64)            b = root(5,1024)
+c = root(2,a)             d = root(2,b)
+c + d
+
+With postfix, it becomes:
+c d +
+root(2,a) root(2,b) +
+a 2 root   b 2 root    +
+root(3,64) 2 root    root(5,1024) 2 root    +
+64 3 root  2 root    1024 5 root  2 root    +
+64 3 root 2 root 1024 5 root 2 root +
+
+How do i convert to postfix with such recurssion of functions? there can be many recurssion level. Please write a c# method for this. We have following info coded somewhere
+
+list: tokens = ["root", "(", "2", ",", "root", "(", "3", ",", "64", ")", ")", "+", "root", "(", "2", ",", "root", "(", "5", ",", "1024", ")", ")"]
+Dictionary: KnownPairs = {"(": ")"}
+Dictionary: precedence = {
+"+": 1,
+"-": 1,
+"*": 2,
+"/": 2,
+"mod": 2,
+"^": 3,
+"root": 4,
+}
+Dictionary: knownFunctions = {
+"root":2 // Root has two parameters possible. I intend to remove number of parameter limit later on. nest if function parameter describes that itself.
+}

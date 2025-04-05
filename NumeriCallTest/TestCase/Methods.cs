@@ -1,12 +1,13 @@
 using System;
 using NumeriCall;
-using NumeriCall.Logics;
+using NumeriCall.AST;
+using NumeriCall.MathOps;
 
 namespace NumeriCallTest.TestCase;
 
 public class Methods
 {
-    private readonly List<string> allTestCases = ["TestCase_Tokenizer"];
+    private readonly List<string> allTestCases = ["TestCase_Tokenizer", "TestCase_AST"];
     
 
     public bool TestChoice() {
@@ -46,6 +47,9 @@ public class Methods
             case "TestCase_Tokenizer":
                 tc_status = TestCase_Tokenizer();
                 break;
+            case "TestCase_AST":
+                tc_status = TestCase_AST();
+                break;
         }
 
         Console.WriteLine($"{testCase}: {(tc_status ? "PASS" : "FAIL")}");
@@ -73,17 +77,50 @@ public class Methods
             {"1 2 3", ["123"]},
             {"1 2 1", ["121"]},
             {"5 + 10 + root(2, 16)", ["5", "+", "10", "+", "root", "(", "2", ",", "16", ")"]},
+            {"root(2, root(3, 64)) + root(2, root(5, 1024))", ["root", "(", "2", ",", "root", "(", "3", ",", "64", ")", ")", "+", "root", "(", "2", ",", "root", "(", "5", ",", "1024", ")", ")"]},
         };
 
         bool tc_status = true;
 
         foreach (var testCase in testCases)
         {
-            var tokens = Tokenizer.Tokenize(testCase.Key);
+            var tokens = TokenService.Tokenize(testCase.Key);
             if (!IsEqual(tokens, testCase.Value)) {
-                Console.WriteLine($"TEST FAIL:::TestCase_Tokenizer:::Input::{testCase.Key}:::Result::[{string.Join("", tokens)}]:::ExpectedReslt::[{string.Join("", testCase.Value)}]");
+                Console.WriteLine($"TEST FAIL ::: TestCase_Tokenizer ::: Input::{testCase.Key} ::: Result::[{string.Join("", tokens)}] ::: ExpectedReslt::[{string.Join("", testCase.Value)}]");
                 tc_status = false;
+            } 
+            else 
+            {
+                Console.WriteLine($"TEST PASS ::: TestCase_Tokenizer ::: Input::{testCase.Key} ::: Result::[{string.Join("", tokens)}] ::: ExpectedReslt::[{string.Join("", testCase.Value)}]");
             };            
+        }
+        return tc_status;
+    }
+
+    private bool TestCase_AST() {
+        Dictionary<string, double> testCases = new()
+        {
+            {"1 + 2 * 3", 7},
+            {"(1 + 2) * 3", 9},
+            {"root(2, 16)", 4},
+            {"root(2, root(3, 64))", 2},
+            {"5 + 10 + root ( 2 , 16 )", 19},
+            {"root(2, root(3, 64)) + root(2, root(5, 1024))", 4},
+        };
+        
+
+        bool tc_status = true;
+
+        foreach (var testCase in testCases)
+        {
+            double result = ExpressionEvaluator.Evaluate(TokenService.Tokenize(testCase.Key));
+            if (result != testCase.Value) {
+                Console.WriteLine($"TEST FAIL ::: TestCase_AST ::: Input::{testCase.Key} ::: Result::{result} ::: ExpectedReslt::{testCase.Value}");
+                tc_status = false;
+            }
+            else {
+                Console.WriteLine($"TEST PASS ::: TestCase_AST ::: Input::{testCase.Key} ::: Result::{result} ::: ExpectedReslt::{testCase.Value}");
+            }            
         }
         return tc_status;
     }

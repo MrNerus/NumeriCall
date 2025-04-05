@@ -3,7 +3,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace NumeriCall.Logics;
+namespace NumeriCall.MathOps;
 
 public class Stack<T>(int maxCapacity = 0)
 {
