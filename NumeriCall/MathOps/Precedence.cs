@@ -7,7 +7,8 @@ public enum OperatorPrecedence
     None = 0,
     Additive = 1,
     Multiplicative = 2,
-    Primary = 3
+    Exponent = 3,
+    Primary = 4
 }
 public class Precedence
 {
@@ -20,6 +21,7 @@ public class Precedence
             "*" => OperatorPrecedence.Multiplicative,
             "/" => OperatorPrecedence.Multiplicative,
             "%" => OperatorPrecedence.Multiplicative,
+            "^" => OperatorPrecedence.Exponent,
             "(" => OperatorPrecedence.Primary,
             "{" => OperatorPrecedence.Primary,
             "[" => OperatorPrecedence.Primary,

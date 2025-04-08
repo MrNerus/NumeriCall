@@ -5,17 +5,18 @@ namespace NumeriCall.MathOps;
 
 public partial class TokenService
 {
-    public static readonly List<string> Tokens = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "+", "-", "*", "/", "(", ")", "^", "root", "pow", "mod", ",", "PI", "TAU"];
+    public static readonly List<string> Tokens = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "+", "-", "*", "/", "(", ")", "^", "root", "pow", "mod","abs", "celi", "floor", "round", ",", "PI", "TAU"];
 
     public static readonly Dictionary<string, string> Pairs = new()
     {
         {"(", ")"},
     };
 
-    public static readonly List<string> Functions = ["root", "pow"];
+    public static readonly List<string> Functions = ["root", "pow", "mod", "abs", "celi", "floor", "round"];
 
     public static readonly List<string> Numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."];
     public static readonly List<string> Constants = ["PI", "TAU"];
+    public static readonly List<string> UrinaryOperators = ["+", "-"];
     // public static readonly char separator = '␟';
     public static readonly char separator = '|';
 

@@ -106,6 +106,34 @@ public class Methods
             {"root(2, root(3, 64))", 2},
             {"5 + 10 + root ( 2 , 16 )", 19},
             {"root(2, root(3, 64)) + root(2, root(5, 1024))", 4},
+            {"1 + 2 - 3 + 4", 4},
+            {"1 + 2 * 3 ^ 2", 19},
+            {"(1 + 2 * 3) ^ 2", 49},
+            {"root(2, 9) + root(3, 27)", 6},
+            {"pow(2, 3)", 8},
+            {"pow(2, pow(2, 2))", 16},
+            {"mod(10, 3)", 1},
+            {"mod(10 + 5, 6)", 3},
+            {"abs(-5)", 5},
+            {"abs(-root(2, 16))", 4},
+            {"celi(4.2)", 5},
+            {"floor(4.9)", 4},
+            {"round(4.4)", 4},
+            {"round(4.5)", 5},
+            {"PI * 2", Math.PI * 2},
+            {"TAU / 2", Math.PI},
+            {"root(2, 16) + pow(2, 2) * mod(10, 3)", 8},
+            {"pow(2, 3 + 1)", 16},
+            {"pow(2, root(2, 16))", 16},
+            {"round(root(2, 15))", 4},
+            {"round(root(2, 16) + 0.4)", 4},
+            {"abs(-PI) + abs(-TAU)", Math.PI + 2 * Math.PI},
+            {"- - 1", 1},
+            {"- 1 - 2", -3},
+            {"- 1 - - 2", 1},
+            {"- 1 + + 2", 1},
+            {"- 1 - + 2", -3},
+            {"- 1 + - 2", -3},
         };
         
 
@@ -122,6 +150,48 @@ public class Methods
                 Console.WriteLine($"TEST PASS ::: TestCase_AST ::: Input::{testCase.Key} ::: Result::{result} ::: ExpectedReslt::{testCase.Value}");
             }            
         }
+
+
+        Dictionary<string, string> testCases_error = new()
+        {
+            {"1 +", "Syntax error"},
+            {"* 3", "Syntax error"},
+            {"(1 + 2", "Syntax error"},
+            {"1 + 2)", "Syntax error"},
+            {"root(2)", "Syntax error"},
+            {"root(2, 16, 8)", "Syntax error"},
+            {"pow()", "Syntax error"},
+            {"abs(1, 2)", "Syntax error"},
+            {"mod(10)", "Syntax error"},
+            {"PI()", "Syntax error"},
+            {"TAU(2)", "Syntax error"},
+            {"round(,4)", "Syntax error"},
+            {"1 + + 2", "Syntax error"},
+            {"1 2", "Syntax error"},
+            {"root(2 root(2, 16))", "Syntax error"},
+            {"pow(2, )", "Syntax error"},
+            {"mod(,3)", "Syntax error"},
+            {",1 + 2", "Syntax error"},
+        };
+        
+        foreach (var testCase in testCases_error)
+        {
+            try {
+                double result = ExpressionEvaluator.Evaluate(TokenService.Tokenize(testCase.Key));
+            } 
+            catch (Exception e)
+            {
+                if (e.Message.StartsWith(testCase.Value)) {
+                    Console.WriteLine($"ERR TEST PASS ::: TestCase_AST ::: Input::{testCase.Key} ::: Result::{e.Message} ::: ExpectedReslt::{testCase.Value}...");
+                }
+                else {
+                    Console.WriteLine($"ERR TEST FAIL ::: TestCase_AST ::: Input::{testCase.Key} ::: Result::{e.Message} ::: ExpectedReslt::{testCase.Value}...");
+                    tc_status = false;
+                }            
+            }
+        }
+
+
         return tc_status;
     }
 
