@@ -30,12 +30,12 @@ jobs:
     - name: Pack project
       run: dotnet pack --configuration Release --output ./artifacts
 
-    - name: Upload to Release
-      uses: Shopify/upload-to-release@v2
+    - name: Upload to release
+      uses: JasonEtco/upload-to-release@master
       with:
-        name: NumeriCall
-        path: ./artifacts/*.nupkg
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        args: my-image.tar
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Publish to GitHub Packages
       run: dotnet nuget push ./artifacts/*.nupkg --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" --api-key ${{ secrets.GITHUB_TOKEN }}
