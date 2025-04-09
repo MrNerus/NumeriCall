@@ -33,7 +33,7 @@ jobs:
     - name: Upload to release
       uses: JasonEtco/upload-to-release@master
       with:
-        args: my-image.tar
+        args: ./artifacts/*.nupkg
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
