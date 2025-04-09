@@ -1,13 +1,12 @@
-name: .NET Build and Package
+name: .NET Build, Package, Release, and Publish
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
+    tags:
+      - 'v*' # Trigger on version tags like v1.0.0
 
 jobs:
-  build-and-pack:
+  build-release-publish:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,16 +22,17 @@ jobs:
       run: dotnet restore
 
     - name: Build project
-      run: dotnet build --configuration Release
+      run: dotnet build --configuration Release --project .\NumeriCall\
 
     - name: Pack project
       run: dotnet pack --configuration Release --output ./artifacts
 
-    - name: Debug artifacts directory
-      run: ls -la ./artifacts
-
-    - name: Upload package artifact
-      uses: actions/upload-artifact@v4
+    - name: Upload to Release
+      uses: Shopify/upload-to-release@v1
       with:
-        name: dotnet-package
-        path: ./artifacts
+        name: NumeriCall
+        path: ./artifacts/*.nupkg
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Publish to GitHub Packages
+      run: dotnet nuget push ./artifacts/*.nupkg --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" --api-key ${{ secrets.GITHUB_TOKEN }}
