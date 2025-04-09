@@ -17,7 +17,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '9.x' # Specify your required .NET version
+        dotnet-version: '9.0'
 
     - name: Restore dependencies
       run: dotnet restore
@@ -27,6 +27,9 @@ jobs:
 
     - name: Pack project
       run: dotnet pack --configuration Release --output ./artifacts
+
+    - name: Debug artifacts directory
+      run: ls -la ./artifacts
 
     - name: Upload package artifact
       uses: actions/upload-artifact@v3
