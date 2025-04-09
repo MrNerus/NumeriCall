@@ -67,6 +67,7 @@ public class FunctionNode(string name, List<IAstNode> parameters) : IAstNode
             };
 
         } catch (ArgumentOutOfRangeException e) {
+            _ = e;
             throw new Exception($"Syntax error: Insufficient arguments for function {_name}.");
         }
     }
@@ -164,9 +165,10 @@ public class ExpressionParser(List<string> tokens)
         try {
             if (TokenService.UrinaryOperators.Contains(_tokens[_position]))
             {
+                var op = _tokens[_position];
                 _position++;
                 var operand = ParsePrimary(); // Recursively parse the operand after the unary '-'
-                return new UnaryOperationNode(operand, "-");
+                return new UnaryOperationNode(operand, op);
             }
             
             if (TokenService.Functions.Contains(_tokens[_position]))
@@ -216,6 +218,7 @@ public class ExpressionParser(List<string> tokens)
 
         } 
         catch (ArgumentOutOfRangeException e) {
+            _ = e;
             throw new Exception($"Syntax error near position {_position}. Incomplete Expression.");
         }
         catch (ArgumentException e) {
