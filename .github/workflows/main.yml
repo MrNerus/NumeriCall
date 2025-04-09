@@ -30,10 +30,8 @@ jobs:
     - name: Pack project
       run: dotnet pack ./NumeriCall/ --configuration Release --output ./artifacts
 
-    - name: Upload to release
-      uses: JasonEtco/upload-to-release@master
-      with:
-        args: ./artifacts/*.nupkg
+    - name: Upload to release using GitHub CLI
+      run: gh release upload "$GITHUB_REF_NAME" ./artifacts/*.nupkg
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
