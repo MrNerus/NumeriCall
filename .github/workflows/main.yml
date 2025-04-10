@@ -45,7 +45,7 @@ jobs:
     - name: Check if release exists
       id: check_release
       run: |
-        if gh release view "${{ github.event.inputs.tag_name }}" &>/dev/null; then
+        if gh release view ${{ github.event.inputs.tag_name }} &>/dev/null; then
           echo "exists=true" >> "$GITHUB_OUTPUT"
         else
           echo "exists=false" >> "$GITHUB_OUTPUT"
